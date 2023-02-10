@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="musicBean1"
+          class="ua.exercise.springRepetition.AlternativeRockMusic">
+    </bean>
+    <bean id="musicBean2"
+          class="ua.exercise.springRepetition.ClassicalMusic">
+    </bean>
+    <bean id="musicBean3"
+          class="ua.exercise.springRepetition.RockMusic">
+    </bean>
+
+
+    <bean id="musicPlayer"
+          class="ua.exercise.springRepetition.MusicPlayer">
+        <constructor-arg>
+            <list>
+                <ref bean="musicBean1" />
+                <ref bean="musicBean2" />
+                <ref bean="musicBean3" />
+            </list>
+        </constructor-arg>
+        <property name="volume" value="60"/>
+        <property name="nameOfGadget" value="IPod"/>
+    </bean>
+
+</beans>
