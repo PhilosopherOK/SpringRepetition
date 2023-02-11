@@ -1,19 +1,45 @@
 package ua.exercise.springRepetition;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Random;
+
+@Component
 public class MusicPlayer {
+    Random random = new Random();
     List<Music> musicList;
     int volume;
     String nameOfGadget;
 
-    void playSong(){
-        for(Music music:musicList)
-        System.out.println(music.getSong());
+    ClassicalMusic classicalMusic;
+    AlternativeRockMusic alternativeRockMusic;
+    RockMusic rockMusic;
+
+
+    @Autowired
+    MusicPlayer(@Qualifier("classicalMusic") ClassicalMusic classicalMusic,
+                 @Qualifier("alternativeRockMusic") AlternativeRockMusic alternativeRockMusic,
+                 @Qualifier("rockMusic") RockMusic rockMusic) {
+        this.classicalMusic = classicalMusic;
+        this.alternativeRockMusic = alternativeRockMusic;
+        this.rockMusic = rockMusic;
     }
-    public MusicPlayer(List musicList) {
-        this.musicList = musicList;
+
+    void playSong(GenreOfMusic genreOfMusic){
+        switch (genreOfMusic){
+            case ROCK:
+                System.out.println(rockMusic.getSong().get(random.nextInt(3)));
+            case CLASSICAL:
+                System.out.println(classicalMusic.getSong().get(random.nextInt(3)));
+            case ALTERNATIVEROCK:
+                System.out.println(alternativeRockMusic.getSong().get(random.nextInt(3)));
+
+        }
     }
+
 
     public int getVolume() {
         return volume;
