@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Random;
 
-@Component
+
 public class MusicPlayer {
     Random random = new Random();
     List<Music> musicList;
@@ -19,10 +19,10 @@ public class MusicPlayer {
     RockMusic rockMusic;
 
 
-    @Autowired
-    MusicPlayer(@Qualifier("classicalMusic") ClassicalMusic classicalMusic,
-                 @Qualifier("alternativeRockMusic") AlternativeRockMusic alternativeRockMusic,
-                 @Qualifier("rockMusic") RockMusic rockMusic) {
+
+    MusicPlayer(ClassicalMusic classicalMusic,
+                 AlternativeRockMusic alternativeRockMusic,
+                 RockMusic rockMusic) {
         this.classicalMusic = classicalMusic;
         this.alternativeRockMusic = alternativeRockMusic;
         this.rockMusic = rockMusic;
