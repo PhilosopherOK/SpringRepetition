@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit bird</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/avifauna/{id}(id=${bird.getId()})}" th:object="${bird}">
+    <label for="name">Edit name</label>
+    <input type="text" th:field="*{name}" id="name">
+    <br>
+    <label for="species">Edit species</label>
+    <input type="text" th:field="*{species}" id="species">
+    <br>
+    <input type="submit" value="Update bird">
+</form>
+
+</body>
+</html>

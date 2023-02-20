@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Avifauna</title>
+</head>
+<body>
+<div th:each="bird : ${avifauna}">
+    <a th:href="@{/avifauna/{id}(id=${bird.getId()})}" th:text="${bird.getName()}">anyBird</a>
+</div>
+</body>
+</html>

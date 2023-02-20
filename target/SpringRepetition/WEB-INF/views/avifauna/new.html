@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New bird</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/avifauna}" th:object="${bird}">
+    <label for="name">Enter name for bird</label>
+    <input type="text" th:field="*{name}" id="name">
+    <br>
+    <label for="species">Enter bird species</label>
+    <input type="text" th:field="*{species}" id="species">
+    <br>
+    <input type="submit" value="Create bird"/>
+</form>
+
+</body>
+</html>
