@@ -33,9 +33,12 @@ public class BirdDAO {
     }
 
     public void update(int id, Bird newBird) {
-        aviFauna.get(id - 1).setName(newBird.getName());
-        aviFauna.get(id - 1).setSpecies(newBird.getSpecies());
+        Bird birdOld = show(id);
+        birdOld.setName(newBird.getName());
+        birdOld.setSpecies(newBird.getSpecies());
     }
 
-
+    public void delete(int id) {
+        aviFauna.removeIf(bird -> bird.getId() == id);
+    }
 }

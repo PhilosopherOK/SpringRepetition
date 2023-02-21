@@ -51,4 +51,10 @@ public class AvifaunaController {
         birdDAO.update(id, bird);
         return "redirect:/avifauna";
     }
+
+    @DeleteMapping("{id}")
+    String delete(@PathVariable("id") int id){
+        birdDAO.delete(id);
+        return "redirect:/avifauna";
+    }
 }

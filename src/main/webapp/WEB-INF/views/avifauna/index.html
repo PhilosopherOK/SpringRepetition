@@ -8,5 +8,11 @@
 <div th:each="bird : ${avifauna}">
     <a th:href="@{/avifauna/{id}(id=${bird.getId()})}" th:text="${bird.getName()}">anyBird</a>
 </div>
+
+<br>
+<hr>
+
+<a href="/avifauna/new">New bird</a>
+
 </body>
 </html>
