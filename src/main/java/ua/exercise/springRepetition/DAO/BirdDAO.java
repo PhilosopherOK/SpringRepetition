@@ -3,42 +3,140 @@ package ua.exercise.springRepetition.DAO;
 import org.springframework.stereotype.Component;
 import ua.exercise.springRepetition.models.Bird;
 
-import java.util.LinkedList;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+
+
+/*CREATE TABLE Bird(
+    id int,
+    name  varchar,
+    species varchar,
+    age int
+    );
+
+INSERT INTO bird(id, name, species, age) values (1, 'Dodo', 'Crow', 21);
+INSERT INTO bird(id, name, species, age) values (2, 'Zida', 'Crow', 20);
+INSERT INTO bird(id, name, species, age) values (3, 'Gachi', 'Sparrow', 3);
+INSERT INTO bird(id, name, species, age) values (4, 'Pixi', 'Freya', 167);
+INSERT INTO bird(id, name, species, age) values (5, 'Frown', 'Carbuncl', 50)
+ */
 
 @Component
 public class BirdDAO {
-    private static int NumberOfBird = 1;
-    private List<Bird> aviFauna;
+    //jdbc:postgresql://localhost:5432/jdbc_API_db
+    private static int NumberOfBird = 6;
+    private static Connection connection;
+    private static final String URL = "jdbc:postgresql://localhost:5432/jdbc_API_db";
+    private static final String USERNAME = "postgres";
+    private static final String PASWORD = "619916";
 
-    {
-        aviFauna = new LinkedList<>();
 
-        aviFauna.add(new Bird(NumberOfBird++, "Grony", "Crow"));
-        aviFauna.add(new Bird(NumberOfBird++, "Zizi", "Tit"));
-        aviFauna.add(new Bird(NumberOfBird++, "Fluppi", "Sparrow"));
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public List<Bird> index() {
-        return aviFauna;
+        List<Bird> birds = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "SELECT * FROM Bird";
+            ResultSet resultSet = statement.executeQuery(SQL);
+
+            while (resultSet.next()) {
+                Bird bird = new Bird();
+
+                bird.setId(resultSet.getInt("id"));
+                bird.setName(resultSet.getString("name"));
+                bird.setSpecies(resultSet.getString("species"));
+                bird.setAge(resultSet.getInt("age"));
+
+                birds.add(bird);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return birds;
     }
 
     public Bird show(int id) {
-        return aviFauna.stream().filter(bird -> bird.getId() == id).findAny().orElse(null);
+        Bird bird = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Bird WHERE id=?");
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+
+            bird = new Bird();
+
+            bird.setId(resultSet.getInt("id"));
+            bird.setName(resultSet.getString("name"));
+            bird.setSpecies(resultSet.getString("species"));
+            bird.setAge(resultSet.getInt("age"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return bird;
     }
 
     public void save(Bird bird) {
-        bird.setId(NumberOfBird++);
-        aviFauna.add(bird);
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO Bird(id, name, species, age) VALUES(?, ?, ?, ?)");
+            //INSERT INTO bird(id, name, species, age) values (5, 'Frown', 'Carbuncl', 50)
+            preparedStatement.setInt(1, NumberOfBird++);
+            preparedStatement.setString(2, bird.getName());
+            preparedStatement.setString(3, bird.getSpecies());
+            preparedStatement.setInt(4, bird.getAge());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void update(int id, Bird newBird) {
-        Bird birdOld = show(id);
-        birdOld.setName(newBird.getName());
-        birdOld.setSpecies(newBird.getSpecies());
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("UPDATE Bird SET name=?, species=?, age=? WHERE id=?");
+
+            preparedStatement.setString(1, newBird.getName());
+            preparedStatement.setString(2, newBird.getSpecies());
+            preparedStatement.setInt(3, newBird.getAge());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(int id) {
-        aviFauna.removeIf(bird -> bird.getId() == id);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("DELETE FROM Bird WHERE id=?");
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

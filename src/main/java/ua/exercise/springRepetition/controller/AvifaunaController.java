@@ -1,11 +1,15 @@
 package ua.exercise.springRepetition.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.exercise.springRepetition.DAO.BirdDAO;
 import ua.exercise.springRepetition.models.Bird;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/avifauna")
@@ -35,25 +39,33 @@ public class AvifaunaController {
     }
 
     @PostMapping
-    String create(@ModelAttribute("bird") Bird bird) {
+    String create(@ModelAttribute("bird") @Valid Bird bird,
+                  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "avifauna/new";
+        }
         birdDAO.save(bird);
         return "redirect:/avifauna";
     }
 
     @GetMapping("/{id}/edit")
-    String edit(Model model, @PathVariable("id") int id){
+    String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("bird", birdDAO.show(id));
         return "avifauna/edit";
     }
 
     @PatchMapping("/{id}")
-    String update(@ModelAttribute("bird") Bird bird, @PathVariable("id") int id){
+    String update(@ModelAttribute("bird") @Valid Bird bird, BindingResult bindingResult,
+                  @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) {
+            return "avifauna/edit";
+        }
         birdDAO.update(id, bird);
         return "redirect:/avifauna";
     }
 
     @DeleteMapping("{id}")
-    String delete(@PathVariable("id") int id){
+    String delete(@PathVariable("id") int id) {
         birdDAO.delete(id);
         return "redirect:/avifauna";
     }
