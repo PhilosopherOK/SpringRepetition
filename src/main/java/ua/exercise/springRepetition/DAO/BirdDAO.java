@@ -25,7 +25,6 @@ INSERT INTO bird(id, name, species, age) values (5, 'Frown', 'Carbuncl', 50)
 @Component
 public class BirdDAO {
     //jdbc:postgresql://localhost:5432/jdbc_API_db
-    private static int NumberOfBird = 6;
     private final JdbcTemplate jdbcTemplate;
 
     public BirdDAO(JdbcTemplate jdbcTemplate) {
@@ -43,8 +42,8 @@ public class BirdDAO {
     }
 
     public void save(Bird bird) {
-        jdbcTemplate.update("INSERT INTO Bird VALUES(?, ?, ?, ?)",
-                NumberOfBird++, bird.getName(), bird.getSpecies(), bird.getAge());
+        jdbcTemplate.update("INSERT INTO Bird(name, species, age) VALUES(?, ?, ?)",
+                bird.getName(), bird.getSpecies(), bird.getAge());
     }
 
     public void update(int id, Bird newBird) {
