@@ -3,6 +3,7 @@ package ua.exercise.springRepetition.DAO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ua.exercise.springRepetition.models.Book;
 import ua.exercise.springRepetition.models.Person;
 
 import java.util.List;
@@ -27,6 +28,11 @@ public class PersonDAO {
         return (Person) jdbcTemplate.query("SELECT * FROM Person WHERE name=?", new Object[]{name},
                 new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
+    public List<Book>showBusyBooks(int idPerson){
+        return jdbcTemplate.query("SELECT * FROM Book WHERE person_id=?", new Object[]{idPerson},
+                new BeanPropertyRowMapper<>(Book.class));
+    }
+
 
     public void save(Person person) {
         jdbcTemplate.update("INSERT INTO Person(name, yearOfBirthday) VALUES (?, ?)",

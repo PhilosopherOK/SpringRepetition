@@ -1,21 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Book</title>
 </head>
 <body>
-<p th:text="${book.getBook_id()()}">book Id</p>
+<p th:text="${book.getBook_id()}">book Id</p>
 <br>
 <p th:text="${book.getTitle()}">book title</p>
 <br>
-<p th:text="${book.getAuthor()()}">book author</p>
+<p th:text="${book.getAuthor()}">book author</p>
 <br>
-<p th:text="${book.getYearOfWriting()()()}">book year Of writing</p>
+<p th:text="${book.getYearOfWriting()}">book year Of writing</p>
 <br>
-<div if(book.getPerson_id == null)
+<div th:if="${personWhoTook.isEmpty()}">
+    <div>No who took :(</div>
+    <form th:method="PATCH" th:action="@{/books/{id}/addHost(id=${book.getBook_id()})}">
+
+        <label for="person">Take a host</label>
+        <select th:object="${person}" th:field="*{person_id}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getPerson_id()}"
+                    th:text="${person.getName()}"></option>
+        </select>
+
+        <input type="submit" value="Add host"/>
+    </form>
+</div>
+<div th:if!="${personWhoTook.isEmpty()}">
+    <div th:each="person : ${personWhoTook}">
+        <a th:text="${person.getName()}">Any person</a>
+        <form th:method="POST" th:action="@{/books/{id}(id=${book.getBook_id()})}">
+            <input type="submit" value="Release"/>
+        </form>
+    </div>
+</div>
+
+<br>
 <hr>
-<a th:href="@{/books/{id}/editBook(id=${book.getTitle()})}">Edit book</a>
+<a th:href="@{/books/{id}/editBook(id=${book.getBook_id()})}">Edit book</a>
 <br>
 <hr>
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getBook_id()})}">

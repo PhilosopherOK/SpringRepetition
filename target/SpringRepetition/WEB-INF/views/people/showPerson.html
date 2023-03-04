@@ -11,9 +11,20 @@
 <br>
 <p th:text="${person.getYearOfBirthday()}">person Year Of Birthday</p>
 <br>
+<div th:if="${books.isEmpty()}">
+    <div>Doesn't have any book</div>
+</div>
+<div th:if!="${books.isEmpty()}">
+    <div th:each="book : ${books}">
+        <a th:text="${book.getTitle()}">Any book</a>
+    </div>
+</div>
+<br>
+
 <hr>
 <a th:href="@{/people/{id}/editPerson(id=${person.getPerson_id()})}">Edit person</a>
 <br>
+
 <hr>
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
     <input type="submit" value="Delete"/>

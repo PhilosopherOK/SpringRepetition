@@ -5,7 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.exercise.springRepetition.DAO.BookDAO;
+import ua.exercise.springRepetition.DAO.PersonDAO;
 import ua.exercise.springRepetition.models.Book;
+import ua.exercise.springRepetition.models.Person;
 
 import javax.validation.Valid;
 
@@ -13,9 +15,11 @@ import javax.validation.Valid;
 @RequestMapping("/books")
 public class BookController {
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping
@@ -26,8 +30,10 @@ public class BookController {
 
 
     @GetMapping("/{id}")
-    public String show(Model model, @PathVariable("id") int id) {
+    public String show(Model model, @PathVariable("id") int id, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.show(id));
+        model.addAttribute("personWhoTook", bookDAO.showWhoTake(id));
+        model.addAttribute("people", personDAO.index());
         return "books/showBook";
     }
 
@@ -52,7 +58,7 @@ public class BookController {
         return "books/editBook";
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public String edit(@ModelAttribute("book") @Valid Book book,
                        BindingResult bindingResult, @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
@@ -65,6 +71,16 @@ public class BookController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
+        return "redirect:/books";
+    }
+    @PostMapping("/{id}")
+    public String releaseBook(@PathVariable("id") int id){
+        bookDAO.releaseBook(id);
+        return "redirect:/books";
+    }
+    @PatchMapping("/{id}/addHost")
+    public String addHost(@ModelAttribute("person")Person person, @PathVariable("id") int id){
+        bookDAO.addHost(id, person.getPerson_id());
         return "redirect:/books";
     }
 }

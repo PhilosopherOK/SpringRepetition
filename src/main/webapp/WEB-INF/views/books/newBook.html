@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Create Book</title>
@@ -18,7 +18,7 @@
     <input type="text" th:field="*{yearOfWriting}" id="yearOfWriting">
     <div style="color:gold" th:if="${#fields.hasErrors('yearOfWriting')}" th:errors="*{yearOfWriting}">Error</div>
     <br>
-    <input type="submit" value="Create person"/>
+    <input type="submit" value="Create book"/>
 </form>
 
 </body>

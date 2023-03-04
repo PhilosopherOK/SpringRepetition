@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 )*/
 public class Book {
     private int book_id;
+    private int person_id;
 
     @NotEmpty(message = "title mush be empty")
     @Size(min = 3, max = 40, message = "Name should be more than 3, and dont max than 40")
@@ -30,8 +31,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(int book_id, String title, String author, int yearOfWriting) {
+    public Book(int book_id, int person_id, String title, String author, int yearOfWriting) {
         this.book_id = book_id;
+        this.person_id = person_id;
         this.title = title;
         this.author = author;
         this.yearOfWriting = yearOfWriting;
@@ -43,6 +45,14 @@ public class Book {
 
     public void setBook_id(int book_id) {
         this.book_id = book_id;
+    }
+
+    public int getPerson_id() {
+        return person_id;
+    }
+
+    public void setPerson_id(int person_id) {
+        this.person_id = person_id;
     }
 
     public String getTitle() {

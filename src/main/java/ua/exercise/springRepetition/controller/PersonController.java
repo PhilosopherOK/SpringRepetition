@@ -29,6 +29,7 @@ public class PersonController {
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id) {
         model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("books", personDAO.showBusyBooks(id));
         return "people/showPerson";
     }
 
@@ -54,7 +55,8 @@ public class PersonController {
     }
 
     @PatchMapping("/{id}")
-    public String edit(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+    public String edit(@ModelAttribute("person") @Valid Person person,
+                       BindingResult bindingResult,
                        @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
             return "people/editPerson";
