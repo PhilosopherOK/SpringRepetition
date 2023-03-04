@@ -1,6 +1,6 @@
 package ua.exercise.springRepetition.models;
 
-import javax.validation.constraints.Min;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,7 +18,7 @@ public class Person {
     private String name;
 
     @NotNull(message = "year mush be not null")
-    @Min(value = 1900,message = "must be after 1900")
+    @Size(min = 3, max = 40, message = "must be after 1900")
     private int yearOfBirthday;
 
     public Person() {

@@ -25,7 +25,7 @@ public class Book {
     private String author;
 
     @NotNull(message = "year mush be not null")
-    @Min(value = 1900,message = "must be after 1900")
+    @Size(min = 1901, max = 2030,message = "must be after 1900")
     private int yearOfWriting;
 
     public Book() {

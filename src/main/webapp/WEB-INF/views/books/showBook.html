@@ -29,7 +29,7 @@
 <div th:if!="${personWhoTook.isEmpty()}">
     <div th:each="person : ${personWhoTook}">
         <a th:text="${person.getName()}">Any person</a>
-        <form th:method="POST" th:action="@{/books/{id}(id=${book.getBook_id()})}">
+        <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getBook_id()})}">
             <input type="submit" value="Release"/>
         </form>
     </div>

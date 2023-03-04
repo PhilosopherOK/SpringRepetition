@@ -73,14 +73,14 @@ public class BookController {
         bookDAO.delete(id);
         return "redirect:/books";
     }
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}/release")
     public String releaseBook(@PathVariable("id") int id){
         bookDAO.releaseBook(id);
-        return "redirect:/books";
+        return "redirect:/books/"+id;
     }
     @PatchMapping("/{id}/addHost")
     public String addHost(@ModelAttribute("person")Person person, @PathVariable("id") int id){
         bookDAO.addHost(id, person.getPerson_id());
-        return "redirect:/books";
+        return "redirect:/books/"+id;
     }
 }

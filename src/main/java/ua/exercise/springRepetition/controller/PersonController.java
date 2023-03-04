@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.exercise.springRepetition.DAO.PersonDAO;
 import ua.exercise.springRepetition.models.Person;
+import ua.exercise.springRepetition.util.PersonValidator;
 
 import javax.validation.Valid;
 
@@ -14,10 +15,12 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PersonController {
     private final PersonDAO personDAO;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PersonController(PersonDAO personDAO) {
+    public PersonController(PersonDAO personDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -41,6 +44,7 @@ public class PersonController {
     @PostMapping()
     public String save(@ModelAttribute("person") @Valid Person person,
                        BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/newPerson";
         }
@@ -58,6 +62,7 @@ public class PersonController {
     public String edit(@ModelAttribute("person") @Valid Person person,
                        BindingResult bindingResult,
                        @PathVariable("id") int id) {
+        personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
             return "people/editPerson";
         }

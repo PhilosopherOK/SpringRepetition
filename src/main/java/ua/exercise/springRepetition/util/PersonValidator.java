@@ -29,8 +29,5 @@ public class PersonValidator implements Validator {
         if(personDAO.show(person.getName()) != null){
              errors.rejectValue("name", "", "This name is on use");
         }
-        if(person.getYearOfBirthday() < 1900){
-            errors.rejectValue("yearOfBirthday", "", " year mush be after 1900");
-        }
     }
 }
