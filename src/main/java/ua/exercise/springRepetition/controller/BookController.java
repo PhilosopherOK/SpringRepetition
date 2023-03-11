@@ -8,32 +8,37 @@ import ua.exercise.springRepetition.DAO.BookDAO;
 import ua.exercise.springRepetition.DAO.PersonDAO;
 import ua.exercise.springRepetition.models.Book;
 import ua.exercise.springRepetition.models.Person;
+import ua.exercise.springRepetition.servises.BooksService;
+import ua.exercise.springRepetition.servises.PeopleService;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
+    private final BooksService booksService;
+    private final PeopleService peopleService;
     private final BookDAO bookDAO;
     private final PersonDAO personDAO;
 
-    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
+    public BookController(BooksService booksService, PeopleService peopleService, BookDAO bookDAO, PersonDAO personDAO) {
+        this.booksService = booksService;
+        this.peopleService = peopleService;
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
     }
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("books", bookDAO.index());
+        model.addAttribute("books", booksService.findAll());
         return "books/allBooks";
     }
 
 
     @GetMapping("/{id}")
     public String show(Model model, @PathVariable("id") int id, @ModelAttribute("person") Person person) {
-        model.addAttribute("book", bookDAO.show(id));
-        model.addAttribute("personWhoTook", bookDAO.showWhoTake(id));
-        model.addAttribute("people", personDAO.index());
+        model.addAttribute("book", booksService.findOne(id));
+        model.addAttribute("people", peopleService.findAll());
         return "books/showBook";
     }
 
@@ -48,13 +53,13 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "books/newBook";
         }
-        bookDAO.save(book);
+        booksService.save(book);
         return "redirect:/books";
     }
 
     @GetMapping("/{id}/editBook")
     public String howToEdit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("book", bookDAO.show(id));
+        model.addAttribute("book", booksService.findOne(id));
         return "books/editBook";
     }
 
@@ -64,13 +69,13 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "books/editBook";
         }
-        bookDAO.update(id, book);
+        booksService.update(id,book);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        bookDAO.delete(id);
+        booksService.delete(id);
         return "redirect:/books";
     }
     @PatchMapping("/{id}/release")

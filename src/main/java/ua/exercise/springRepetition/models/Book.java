@@ -1,6 +1,7 @@
 package ua.exercise.springRepetition.models;
 
-import javax.validation.constraints.Min;
+import jakarta.persistence.*;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,9 +13,13 @@ import javax.validation.constraints.Size;
                      author varchar NOT NULL,
                      yearOfWriting int NOT NULL CHECK ( yearOfWriting > 1900 )
 )*/
+@Entity
+@Table(name = "Book")
 public class Book {
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int book_id;
-    private int person_id;
 
     @NotEmpty(message = "title mush be empty")
     @Size(min = 3, max = 40, message = "Name should be more than 3, and dont max than 40")
@@ -28,12 +33,15 @@ public class Book {
     @Size(min = 1901, max = 2030,message = "must be after 1900")
     private int yearOfWriting;
 
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    private Person host;
+
     public Book() {
     }
 
-    public Book(int book_id, int person_id, String title, String author, int yearOfWriting) {
+    public Book(int book_id, String title, String author, int yearOfWriting) {
         this.book_id = book_id;
-        this.person_id = person_id;
         this.title = title;
         this.author = author;
         this.yearOfWriting = yearOfWriting;
@@ -45,14 +53,6 @@ public class Book {
 
     public void setBook_id(int book_id) {
         this.book_id = book_id;
-    }
-
-    public int getPerson_id() {
-        return person_id;
-    }
-
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
     }
 
     public String getTitle() {
@@ -77,5 +77,13 @@ public class Book {
 
     public void setYearOfWriting(int yearOfWriting) {
         this.yearOfWriting = yearOfWriting;
+    }
+
+    public Person getHost() {
+        return host;
+    }
+
+    public void setHost(Person person) {
+        this.host = person;
     }
 }

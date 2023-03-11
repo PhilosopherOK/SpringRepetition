@@ -13,7 +13,7 @@
 <br>
 <p th:text="${book.getYearOfWriting()}">book year Of writing</p>
 <br>
-<div th:if="${personWhoTook.isEmpty()}">
+<div th:if="${book.getHost().isEmpty()}">
     <div>No who took :(</div>
     <form th:method="PATCH" th:action="@{/books/{id}/addHost(id=${book.getBook_id()})}">
 
@@ -26,8 +26,8 @@
         <input type="submit" value="Add host"/>
     </form>
 </div>
-<div th:if!="${personWhoTook.isEmpty()}">
-    <div th:each="person : ${personWhoTook}">
+<div th:if!="${book.getHost().isEmpty()}">
+    <div th:each="person : ${book.getHost()}">
         <a th:text="${person.getName()}">Any person</a>
         <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getBook_id()})}">
             <input type="submit" value="Release"/>

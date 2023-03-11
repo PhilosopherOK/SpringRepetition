@@ -11,11 +11,11 @@
 <br>
 <p th:text="${person.getYearOfBirthday()}">person Year Of Birthday</p>
 <br>
-<div th:if="${books.isEmpty()}">
+<div th:if="${person.getTakenBooks().isEmpty()}">
     <div>Doesn't have any book</div>
 </div>
-<div th:if!="${books.isEmpty()}">
-    <div th:each="book : ${books}">
+<div th:if!="${person.getTakenBooks().isEmpty()}">
+    <div th:each="book : ${person.getTakenBooks()}">
         <a th:text="${book.getTitle()}">Any book</a>
     </div>
 </div>
