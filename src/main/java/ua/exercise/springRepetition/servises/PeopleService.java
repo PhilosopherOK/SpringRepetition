@@ -18,8 +18,6 @@ public class PeopleService {
         return peopleRepositories.findAll();
     }
     public Person findOne(int id){
-        //Optional<Person> foundPerson = peopleRepositories.findById(id);
-        //return foundPerson.orElse(null);
         return peopleRepositories.findById(id).orElse(null);
     }
     public void save(Person person){

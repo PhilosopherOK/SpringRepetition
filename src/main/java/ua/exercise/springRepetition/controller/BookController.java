@@ -80,12 +80,12 @@ public class BookController {
     }
     @PatchMapping("/{id}/release")
     public String releaseBook(@PathVariable("id") int id){
-        bookDAO.releaseBook(id);
+        booksService.releaseBook(id);
         return "redirect:/books/"+id;
     }
     @PatchMapping("/{id}/addHost")
     public String addHost(@ModelAttribute("person")Person person, @PathVariable("id") int id){
-        bookDAO.addHost(id, person.getPerson_id());
+        booksService.addHost(id, person);
         return "redirect:/books/"+id;
     }
 }

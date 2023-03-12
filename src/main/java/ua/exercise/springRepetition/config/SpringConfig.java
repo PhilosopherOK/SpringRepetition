@@ -28,10 +28,10 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("ua.exercise.springRepetition")
-@EnableWebMvc
 @PropertySource("classpath:hibernate.properties")
-@EnableJpaRepositories("ua.exercise.springRepetition")
 @EnableTransactionManagement
+@EnableJpaRepositories("ua.exercise.springRepetition.repositories")
+@EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

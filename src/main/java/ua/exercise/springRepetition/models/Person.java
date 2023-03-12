@@ -1,11 +1,13 @@
 package ua.exercise.springRepetition.models;
 
 
-import jakarta.persistence.*;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /*Create TABLE Person(
@@ -27,12 +29,12 @@ public class Person {
     private String name;
 
     @NotNull(message = "year mush be not null")
-    @Size(min = 3, max = 40, message = "must be after 1900")
+    @Min(value = 1900, message = "must be after 1900")
     @Column(name = "yearOfBirthday")
     private int yearOfBirthday;
 
-    @OneToMany(mappedBy = "host")
-    private List<Book> takenBooks;
+    @OneToMany(mappedBy = "host", fetch = FetchType.EAGER)
+    private List<Book> takenBooks = new ArrayList<>();
 
 
     public Person() {
@@ -74,5 +76,8 @@ public class Person {
 
     public void setTakenBooks(List<Book> takenBooks) {
         this.takenBooks = takenBooks;
+    }
+    public void setTakenBooks(Book takenBooks) {
+        this.takenBooks.add(takenBooks);
     }
 }

@@ -1,7 +1,9 @@
 package ua.exercise.springRepetition.models;
 
-import jakarta.persistence.*;
 
+
+import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,7 +32,7 @@ public class Book {
     private String author;
 
     @NotNull(message = "year mush be not null")
-    @Size(min = 1901, max = 2030,message = "must be after 1900")
+    @Min(value = 1900, message = "must be after 1900")
     private int yearOfWriting;
 
     @ManyToOne
