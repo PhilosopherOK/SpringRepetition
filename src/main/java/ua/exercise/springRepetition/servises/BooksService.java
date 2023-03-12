@@ -27,11 +27,18 @@ public class BooksService {
     public Book findOne(int id){
         return booksRepositories.findById(id).orElse(null);
     }
+
+    public List<Book> findByNameStartingWith(String startingWith){
+        return booksRepositories.findByTitleStartingWith(startingWith);
+    }
     public void releaseBook(int id){
         Optional<Book> book = booksRepositories.findById(id);
+        Optional<Person> person = peopleRepositories.findById(book.get().getHost().getPerson_id());
         if(book.isPresent()){
             book.get().setHost(null);
+            person.get().getTakenBooks().remove(book.get());
             booksRepositories.save(book.get());
+            peopleRepositories.save(person.get());
         }
     }
 

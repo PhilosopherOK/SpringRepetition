@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Searching</title>
+</head>
+<body>
+<form th:method="GET" th:action="@{/books/search}">
+    <label for="startingWith">Enter name</label>
+    <input type="text" value="startingWith" id="startingWith">
+    <br>
+    <input type="submit" value="Searching"/>
+</form>
+
+
+<div th:if="${findBooks.isEmpty()}">
+    <div>Not found any book</div>
+</div>
+<div th:if!="${findBooks.isEmpty()}">
+    <div th:each="book : ${findBooks}">
+        <a th:text="${book.getTitle()}"></a>
+        <br>
+        <a th:text="${book.getAuthor()}"></a>
+        <br>
+        <a th:text="${book.getHost().getName}"></a>
+    </div>
+</div>
+
+</body>
+</html>

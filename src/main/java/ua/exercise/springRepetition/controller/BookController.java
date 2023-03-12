@@ -12,6 +12,7 @@ import ua.exercise.springRepetition.servises.BooksService;
 import ua.exercise.springRepetition.servises.PeopleService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -88,4 +89,16 @@ public class BookController {
         booksService.addHost(id, person);
         return "redirect:/books/"+id;
     }
+
+    @GetMapping("/search")
+    public String searchPage(@RequestParam(value = "startingWith", required = false) String startingWith , Model model){
+        model.addAttribute("findBooks", booksService.findByNameStartingWith(startingWith));
+        return "books/search";
+    }
+
+//    @PostMapping("/search")
+//    public String search(@RequestParam("startingWith") String startingWith, Model model){
+//        model.addAttribute("findBooks", booksService.findByNameStartingWith(startingWith));
+//        return "books/search";
+//    }
 }
