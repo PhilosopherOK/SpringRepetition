@@ -15,8 +15,14 @@
     <div>Doesn't have any book</div>
 </div>
 <div th:if!="${person.getTakenBooks().isEmpty()}">
+    <div>Book:</div>
     <div th:each="book : ${person.getTakenBooks()}">
-        <a th:text="${book.getTitle()}">Any book</a>
+        <div th:if!="${book.getStitchedNow()}">
+            <div th:text="${book.getTitle()}">Any book</div>
+        </div>
+        <div th:if="${book.getStitchedNow()}">
+            <div style="color:gold" th:text="${book.getTitle()}">Any book</div>
+        </div>
     </div>
 </div>
 <br>

@@ -5,7 +5,7 @@
     <title>Searching</title>
 </head>
 <body>
-<form th:method="GET" th:action="@{/books/search}">
+<form th:method="POST" th:action="@{/books/search?startingWith=startingWith}">
     <label for="startingWith">Enter name</label>
     <input type="text" value="startingWith" id="startingWith">
     <br>

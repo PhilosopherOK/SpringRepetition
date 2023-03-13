@@ -1,9 +1,11 @@
 package ua.exercise.springRepetition.servises;
 
 import org.springframework.stereotype.Service;
+import ua.exercise.springRepetition.models.Book;
 import ua.exercise.springRepetition.models.Person;
 import ua.exercise.springRepetition.repositories.PeopleRepositories;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,12 @@ public class PeopleService {
         return peopleRepositories.findAll();
     }
     public Person findOne(int id){
-        return peopleRepositories.findById(id).orElse(null);
+        Person person = peopleRepositories.findById(id).orElse(null);
+
+            for(Book book: person.getTakenBooks()){
+                book.stitched(new Date());
+            }
+        return person;
     }
     public void save(Person person){
         peopleRepositories.save(person);

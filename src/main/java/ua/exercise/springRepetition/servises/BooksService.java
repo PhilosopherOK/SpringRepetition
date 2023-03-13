@@ -1,6 +1,7 @@
 package ua.exercise.springRepetition.servises;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.exercise.springRepetition.models.Book;
@@ -8,6 +9,7 @@ import ua.exercise.springRepetition.models.Person;
 import ua.exercise.springRepetition.repositories.BooksRepositories;
 import ua.exercise.springRepetition.repositories.PeopleRepositories;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +23,18 @@ public class BooksService {
         this.booksRepositories = booksRepositories;
         this.peopleRepositories = peopleRepositories;
     }
-    public List<Book> findAll(){
-        return booksRepositories.findAll();
+    public List<Book> findAll(int page, int books_per_page, boolean sort_by_year){
+        if(page != 0 && books_per_page != 0 && sort_by_year){
+            return booksRepositories.findAll
+                    (PageRequest.of(page, books_per_page, Sort.by("yearOfWriting"))).getContent();
+        }else if(page != 0 && books_per_page != 0){
+            return booksRepositories.findAll
+                    (PageRequest.of(page, books_per_page)).getContent();
+        }else if(sort_by_year){
+            return booksRepositories.findAll(Sort.by("yearOfWriting"));
+        }else{
+            return booksRepositories.findAll();
+        }
     }
     public Book findOne(int id){
         return booksRepositories.findById(id).orElse(null);
@@ -37,6 +49,7 @@ public class BooksService {
         if(book.isPresent()){
             book.get().setHost(null);
             person.get().getTakenBooks().remove(book.get());
+            book.get().setDateTaken(null);
             booksRepositories.save(book.get());
             peopleRepositories.save(person.get());
         }
@@ -48,6 +61,7 @@ public class BooksService {
         if(book.isPresent()){
             person1.get().setTakenBooks(book.get());
             book.get().setHost(person);
+            book.get().setDateTaken(new Date());
             booksRepositories.save(book.get());
             peopleRepositories.save(person1.get());
         }
